@@ -141,6 +141,7 @@ Swipe.prototype = {
     this._slide(refArray[1],0,0,1);
     this._slide(refArray[2],this.width,0,1);
 
+    this._setVisibility();
   },
 
   kill: function() {
@@ -337,6 +338,9 @@ Swipe.prototype = {
           _this._slide([_this.index-1,_this.index],_this.width,_this.speed,0);
           _this.index += -1;
         }
+        
+        _this._setVisibility();
+
         _this.callback(_this.index, _this.slides[_this.index]);
       } else {
         _this._slide([_this.index-1,_this.index,_this.index+1],0,_this.speed,0);
@@ -377,6 +381,8 @@ Swipe.prototype = {
     this._slide([from,to],this.width * direction,this.speed,0);
 
     this.index = to;
+    
+    this._setVisibility();
 
     this.callback(this.index, this.slides[this.index]);
 
@@ -463,6 +469,18 @@ Swipe.prototype = {
     
     return parseInt(elem.getAttribute('data-index'),10);
 
+  }
+
+  _setVisibility: function() {
+    for (var i = this.slides.length - 1; i >= 0; i--) {
+      if ( i < this.index - 1 || i > this.index + 1) {
+        this.slides[i].style.visibility = 'hidden';
+        this.slides[i].style.display = 'none';
+      } else {
+        this.slides[i].style.display = 'block';
+        this.slides[i].style.visibility = 'visible';
+      }
+    };
   }
 
 };
